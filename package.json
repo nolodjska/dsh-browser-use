@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Browser Use for DeepSeek Harness: the ZCode browser-use runtime (agent.browsers over the DevTools Protocol) plus the control-browser and web-gui-tester skills, aimed at the right-Sidebar Browser webview.",
+  "description": "Browser Use for DeepSeek Harness: browser automation for DeepSeek Harness: `agent.browsers` over the DevTools Protocol, plus the control-browser and web-gui-tester skills, driving the right-Sidebar Browser tab.",
   "main": "lib/index.js",
   "scripts": {
     "verify": "node test/verify.mjs"

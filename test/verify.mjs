@@ -7,7 +7,7 @@
  * cannot prove). No browser, no DSH, always runs.
  *
  * Part B drives the real Sidebar over the DevTools Protocol through the verbatim
- * ZCode client. It needs DSH started with --remote-debugging-port and one Browser
+ * facade. It needs DSH started with --remote-debugging-port and one Browser
  * tab open; when either is missing it prints SKIP rather than failing, because a
  * closed Sidebar is not a broken plugin.
  */

@@ -13,7 +13,7 @@ HOST plugin  (lib/index.js)            electron node-mode child
        ▼
      lib/repl.js  — fresh kernel per call
        ├─ installs globalThis.agent / nodeRepl / the bridge symbol
-       ├─ dynamic import of scripts/browser-client.mjs  (verbatim ZCode client)
+       ├─ installs lib/facade.js (this plugin's agent.browsers)
        └─ returns the last expression's value
        ▼
      lib/backend-cdp.js — the BrowserCommand dispatcher
