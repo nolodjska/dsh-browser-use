@@ -1,0 +1,10 @@
+# Keep the repository in LF. The push channel in use normalises to CRLF, so this
+# file records the intent rather than enforcing it; run `git add --renormalize .`
+# on a machine with push credentials to converge.
+* text=auto eol=lf
+
+# Windows launchers are meant to be CRLF.
+*.vbs text eol=crlf
+
+# Verbatim-ish assets that must not be line-ending munged.
+LICENSE text eol=lf
