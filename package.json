@@ -35,12 +35,14 @@
   "files": [
     "client.js",
     "lib",
-    "scripts",
     "skills",
     "docs",
     "test",
+    "launchers",
+    "notes",
     "README.md",
     "DEBT.md",
+    "NOTICE.md",
     "cordis.patch.yml"
   ],
   "license": "MIT"

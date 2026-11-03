@@ -1,7 +1,7 @@
 # dsh-browser-use
 
-ZCode's browser-use runtime, hosted by DeepSeek Harness, driving **this window's
-own right-Sidebar Browser tab** — not an external Chrome.
+Browser automation for DeepSeek Harness that drives **this window's own right-Sidebar
+Browser tab** — not an external Chrome, and not a second product to install.
 
 ## What the model gets
 
@@ -10,12 +10,13 @@ own right-Sidebar Browser tab** — not an external Chrome.
 | Tool | `mcp__node_repl__js` — one JavaScript cell, fresh kernel per call |
 | Kernel bindings | `agent.browsers`, `agent.documentation`, `nodeRepl.write/emitImage` |
 | Skills | `control-browser`, `web-gui-tester` |
-| Protocol | The ZCode `BrowserCommand` surface (navigate, snapshot, locator actions, screenshot, viewport, dialogs, cua/dom_cua, tab registry) |
+| Object model | `agent.browsers` (tabs, locators, ARIA snapshot with refs, viewport, dialogs) |
 
-The client half is the **verbatim** ZCode `scripts/browser-client.mjs`; this
-package supplies the runtime it expects (`node_repl` host + a browser transport).
-Locator dialect, ARIA snapshot format, error codes and `agent.browsers` semantics
-therefore match ZCode instead of approximating it.
+The object model in `lib/facade.js` is this project's own code, written against the
+command layer in `lib/backend-cdp.js`. It follows the `agent.browsers` interface this
+ecosystem's tooling expects (tab registry, Playwright-shaped locators, an ARIA
+snapshot with `[ref=eN]` markers) because that interface is what guidance is written
+against — not because any of it is copied.
 
 ## Install
 
@@ -77,14 +78,14 @@ lib/backend-cdp.js BrowserCommand dispatcher over raw CDP
 lib/cdp.js         CDP transport, target discovery, endpoint probing
 lib/selectors.js   Playwright selector dialect + ARIA snapshot with refs (in-page)
 client.js          renderer half: the Sidebar bridge, session fuse, M2 spike
-scripts/           verbatim ZCode browser-client.mjs
-skills/ docs/      verbatim ZCode skills and API documentation
+lib/facade.js      the agent.browsers object model (ours)
+skills/ docs/      this plugin's guidance and API documentation
 test/verify.mjs    the checks above
 launchers/         windowless restart scripts that enable the DevTools endpoint
 notes/             ARCHITECTURE.md, SELF-MODIFICATION.md — how this works and how
                    the harness itself can be extended
 DEBT.md            every deviation, with evidence and the canonical shape
-NOTICE.md          provenance: which files are ZCode's, under which license
+NOTICE.md          provenance: what this is built on, and what is not here
 ```
 
 ## Read next
