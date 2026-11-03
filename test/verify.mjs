@@ -12,6 +12,7 @@
  * closed Sidebar is not a broken plugin.
  */
 import { readFileSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { BrowserBackend } from '../lib/backend-cdp.js'
@@ -154,24 +155,22 @@ async function partB() {
     // The caller is whoever runs this script; the contract only needs a stable id.
     callerSessionId: () => 'verify-session',
   })
-  const bridge = {
-    assertAvailable() {},
-    documentationRoot: join(ROOT, 'docs'),
-    list: () => backend.list(),
-    execute: (browserId, generation, command) => backend.execute(browserId, generation, command),
+  const host = {
+    describeAll: () => backend.list(),
+    describe: async () => (await backend.list())[0],
+    execute: async (command) => {
+      const descriptor = (await backend.list())[0]
+      return backend.execute(descriptor.id, descriptor.generation, command)
+    },
+    documentation: async (name) =>
+      readFile(join(ROOT, 'docs', name === 'playwright' ? 'playwright.md' : 'overview.md'), 'utf8'),
   }
-  const boot = `
-const root = process.env.ZCODE_PLUGIN_ROOT;
-const { join } = await import('node:path');
-const { pathToFileURL } = await import('node:url');
-const { setupBrowserRuntime } = await import(pathToFileURL(join(root, 'scripts', 'browser-client.mjs')).href);
-await setupBrowserRuntime({ globals: globalThis });
-`
-  const cell = (code) => runCell(boot + code, { bridge, pluginRoot: ROOT, imageDir: defaultImageDir() })
+  const cell = (code) =>
+    runCell(code, { host, documentation: host.documentation, imageDir: defaultImageDir() })
 
   const descriptor = await backend.list()
   check('descriptor is a cdp backend', descriptor[0]?.type === 'cdp')
-  check('descriptor declares no hardcoded port', !/922\d/.test(JSON.stringify(descriptor[0]?.metadata ?? {}).replace(/"endpoint":"[^"]*"/, '')))
+  check('descriptor metadata carries no pinned port', !/922\d/.test(JSON.stringify(descriptor[0]?.metadata ?? {}).replace(/"endpoint":"[^"]*"/, '')))
 
   const listed = await backend.execute('dsh-sidebar', 1, { method: 'list' })
   check('tabs.list returns tabs', Array.isArray(listed.tabs) && listed.tabs.length > 0)
@@ -181,7 +180,7 @@ await setupBrowserRuntime({ globals: globalThis });
   const snapshot = await cell(`
 const browser = await agent.browsers.getDefault();
 const summary = (await browser.tabs.list())[0];
-const tab = await browser.tabs.get(summary.id);
+const tab = await browser.tabs.get(summary.tabId);
 await tab.playwright.domSnapshot();
 `)
   check('domSnapshot carries refs', typeof snapshot.text === 'string' && snapshot.text.includes('[ref='))
