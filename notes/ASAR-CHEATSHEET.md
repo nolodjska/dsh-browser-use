@@ -1,5 +1,7 @@
 # app.asar cheatsheet (verified on this build)
 
+> **Scope.** Documents extending an installation you own, or an agent doing that work under your supervision. It is not a claim that you may modify software you have no right to modify.
+
 Numbers below were measured on
 `D:\deepseek\dsh_windows\file\resources\app.asar` (182,434,783 bytes,
 Electron 44.7.0). Treat them as a worked example, not constants — always re-read

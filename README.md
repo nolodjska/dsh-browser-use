@@ -98,6 +98,19 @@ NOTICE.md          provenance: what this is built on, and what is not here
 - `DEBT.md` — the honest list, including the two findings that stop a no-patch
   release today.
 
+## Scope of the notes in this repository
+
+`notes/` documents how this harness and its plugins fit together, including how to
+extend a packaged installation (`notes/ASAR-CHEATSHEET.md`) and how to add a
+Host→Client verb to the host application (`notes/SELF-MODIFICATION.md`).
+
+- They describe extending **your own installation, on your own machine**. Whether
+  you may patch a particular binary is a licensing question about that software;
+  these notes record a method, they do not grant permission.
+- `launchers/*.vbs` restart DSH with `--remote-debugging-port`. That endpoint is
+  **unauthenticated by design** — it is Chromium's debug protocol, so anything
+  running as your user can drive the app while it is up. Use it on a machine you
+  control, and prefer the ordinary launcher when you are not using this tool.
 ## Known limits
 
 `DEBT.md` is the authoritative list. Summary: screenshots need the tab painted;

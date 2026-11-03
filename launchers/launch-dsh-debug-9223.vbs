@@ -1,3 +1,6 @@
+REM WARNING: this opens an UNAUTHENTICATED DevTools port on 127.0.0.1.
+REM Anything running as your user can drive the app while it is up - use it only
+on a machine you control, and use the ordinary launcher when you are done.
 ' Restart DeepSeek Harness with a DevTools endpoint on a free port.
 ' Fallback for when 9222 is still held by a dying instance: TCP accepts the
 ' connection but never answers, so the endpoint looks alive and is not.

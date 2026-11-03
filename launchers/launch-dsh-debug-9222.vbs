@@ -1,3 +1,6 @@
+REM WARNING: this opens an UNAUTHENTICATED DevTools port on 127.0.0.1.
+REM Anything running as your user can drive the app while it is up - use it only
+on a machine you control, and use the ordinary launcher when you are done.
 ' Restart DeepSeek Harness with its Chromium DevTools endpoint enabled.
 ' Windowless launcher: no console flashes. Double-click the matching .lnk.
 Option Explicit

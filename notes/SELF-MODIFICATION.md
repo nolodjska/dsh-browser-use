@@ -1,5 +1,7 @@
 # How DSH can be changed — a method, not a workaround
 
+> **Scope.** Documents extending an installation you own, or an agent doing that work under your supervision. It is not a claim that you may modify software you have no right to modify.
+
 This file answers one question: **what can a plugin change, what can only a patch
 change, and how do you tell the difference before writing code?** It is written to
 be reused by other agents working on this harness, not just for this repository.
