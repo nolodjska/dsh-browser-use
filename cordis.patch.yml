@@ -1,0 +1,11 @@
+# dsh-browser-use bundle patch layer.
+#
+# Registers one Host row that contributes:
+#   - the `mcp__node_repl__js` tool (a fresh-kernel JS cell over `agent.browsers`)
+#   - the control-browser and web-gui-tester skills
+#
+# The browser itself is DSH's own right-Sidebar Browser tab, reached over the
+# DevTools Protocol, so DSH must be started with --remote-debugging-port.
+- insert:
+    - id: browser-use
+      name: 'dsh-browser-use'

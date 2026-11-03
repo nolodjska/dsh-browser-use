@@ -1,0 +1,47 @@
+{
+  "name": "dsh-browser-use",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser Use for DeepSeek Harness: the ZCode browser-use runtime (agent.browsers over the DevTools Protocol) plus the control-browser and web-gui-tester skills, aimed at the right-Sidebar Browser webview.",
+  "main": "lib/index.js",
+  "scripts": {
+    "verify": "node test/verify.mjs"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.1 <5",
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": { "optional": true },
+    "@deepseek-ai/dsh-tools": { "optional": true }
+  },
+  "files": [
+    "client.js",
+    "lib",
+    "scripts",
+    "skills",
+    "docs",
+    "test",
+    "README.md",
+    "DEBT.md",
+    "cordis.patch.yml"
+  ],
+  "license": "MIT"
+}
