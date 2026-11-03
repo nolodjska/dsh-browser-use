@@ -1,44 +1,19 @@
-# In-app Browser video recording
+# Recording
 
-`Tab.recording` records the controlled IAB tab's existing WebView. It does not launch Playwright or
-another Chromium process. The API is asynchronous so a recording can continue across fresh
-`node_repl` kernels.
+Not implemented.
 
-```js
-const job = await tab.recording.start({
-  viewport: { width: 1280, height: 720 },
-  fps: 25,
-  maxDurationMs: 20_000,
-  settleMs: 800,
-  showCursor: true,
-  actions: [
-    { type: "move", x: 300, y: 240, durationMs: 500 },
-    { type: "click", selector: "#start", delayAfterMs: 1000 },
-    { type: "scroll", deltaY: 600, durationMs: 800 },
-  ],
-});
-job;
-```
+`tab.recording.start()` / `status()` / `cancel()` answer
+`capability_unsupported`. There is no screencast transport in this runtime: the
+guest is driven over the DevTools Protocol, and producing a WebM would mean running
+`Page.startScreencast` plus an encoder, tracking frames, timestamps and output
+paths. That is a separate feature with its own failure modes, and shipping a
+half-working recorder would be worse than shipping none.
 
-Keep `job.id`. In a later fresh JavaScript call, bootstrap Browser Use again, return the complete tab
-list in a dedicated call, then recover the verified target tab. Poll without an output path while the job
-is running. On the final poll, pass a workspace-relative `.webm` path:
+## What to do instead
 
-```js
-await tab.recording.status(recordingId, {
-  outputPath: "recordings/demo.webm",
-});
-```
-
-The phases are `preparing → capturing → finalizing → completed`. Only a completed status with
-`artifact.path` is a deliverable; that path has been materialized into the active local or remote
-workspace. Call `tab.recording.cancel(recordingId)` when the take is no longer needed.
-
-Actions are a restricted data-only DSL: `wait`, `click`, `type`, `hover`, `move`, `scroll`, `scrollTo`,
-`wheel`, `drag`, and `waitFor`. Do not put page code in recording actions. Derive selectors from the
-latest DOM snapshot; use coordinates only for visually verified canvas/custom controls. One tab may
-have only one active recording. The hard duration limit is 90 seconds.
-
-Recording keeps a hidden IAB rendering surface alive during capture and releases it before finalizing
-the WebM stream. ZCode uses Electron's built-in Chromium `MediaRecorder`; recording does not require
-FFmpeg or any executable on the application PATH.
+- For a single moment: `await tab.screenshot()` and `nodeRepl.emitImage(bytes)`.
+- For a sequence: take one screenshot per state you care about, each with the URL
+  and the asserted state recorded next to it. That is more useful evidence than a
+  video nobody scrubs.
+- If a user genuinely needs video, an external screen recorder is the honest
+  answer; say so rather than improvising.
