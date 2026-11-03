@@ -111,6 +111,7 @@ Host→Client verb to the host application (`notes/SELF-MODIFICATION.md`).
   **unauthenticated by design** — it is Chromium's debug protocol, so anything
   running as your user can drive the app while it is up. Use it on a machine you
   control, and prefer the ordinary launcher when you are not using this tool.
+
 ## Known limits
 
 `DEBT.md` is the authoritative list. Summary: screenshots need the tab painted;
